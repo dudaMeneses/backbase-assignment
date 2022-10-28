@@ -43,6 +43,7 @@ One of the core actions of the application is to inform if a movie won Oscar, gi
 Let's start by the premise that *_no matter which technology choices I make, my domain logic must continue working_*. By saying that, DDD will be the design paradigm I will follow. Once I have that in mind, I also opt to go for the hexagonal architecture inside my code base, because I can make evident the separation between my domain logic, my infrastructure decisions and my application definitions.
 
 To keep my application depending on definitions, not implementations, I opt for `Ports and Adapters` pattern. Then if I decide to change my infrastructure, endpoints I use to integrate my application or whatever, it is already sufficiently isolated. Also, I opted to add `circuit breakers and bulkheads`, in case of instability when integrating with the `OMDb API`.
+
 ---
 
 #### Future Improvements

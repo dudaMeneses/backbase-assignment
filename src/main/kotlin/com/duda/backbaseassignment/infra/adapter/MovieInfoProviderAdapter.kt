@@ -1,4 +1,4 @@
-package com.duda.backbaseassignment.infra.adapter.database
+package com.duda.backbaseassignment.infra.adapter
 
 import com.duda.backbaseassignment.domain.port.MovieInfoProvider
 import org.springframework.stereotype.Component

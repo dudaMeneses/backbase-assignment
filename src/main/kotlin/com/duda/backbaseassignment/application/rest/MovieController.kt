@@ -3,19 +3,14 @@ package com.duda.backbaseassignment.application.rest
 import com.duda.backbaseassignment.application.rest.model.request.MovieRatingRequest
 import com.duda.backbaseassignment.application.rest.model.response.MovieInfoResponse
 import com.duda.backbaseassignment.application.rest.model.response.MovieOscarsResponse
-import com.duda.backbaseassignment.domain.model.valueObject.PrizeCategory
+import com.duda.backbaseassignment.domain.model.valueObject.Category
 import com.duda.backbaseassignment.domain.service.MovieQuery
 import com.duda.backbaseassignment.domain.service.OscarWinnerQuery
 import com.duda.backbaseassignment.domain.service.RateMovieCommand
 import com.duda.backbaseassignment.domain.service.param.MovieQueryFilter
 import com.duda.backbaseassignment.domain.service.param.MovieRatingParam
 import com.duda.backbaseassignment.domain.service.param.OscarWinnerFilter
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping(path = ["/movies"])
@@ -28,8 +23,8 @@ class MovieController(
     @GetMapping(path = ["/oscars"])
     fun getMovieOscars(
         @RequestParam("movieTitle", required = true) movieTitle: String,
-        @RequestParam("category", required = true, defaultValue = "BEST_PICTURE") category: PrizeCategory
-    ): List<MovieOscarsResponse> {
+        @RequestParam("category", required = true, defaultValue = "BEST_PICTURE") category: Category
+    ): MovieOscarsResponse {
         return oscarWinnerQuery.find(OscarWinnerFilter(movieTitle = movieTitle, category = category))
     }
 

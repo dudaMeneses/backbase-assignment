@@ -16,6 +16,10 @@
 	<properties>
 		<java.version>17</java.version>
 		<kotlin.version>1.6.21</kotlin.version>
+		<database.url>jdbc:mysql://localhost:3306/movies_info?allowLoadLocalInfile=true</database.url>
+		<database.username>root</database.username>
+		<database.password>mysql</database.password>
+		<testcontainers.version>1.17.5</testcontainers.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -25,6 +29,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jooq</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
@@ -55,6 +63,18 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>mysql</artifactId>
+			<version>${testcontainers.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -98,10 +118,10 @@
 					</execution>
 				</executions>
 				<configuration>
-					<driver>com.mysql.jdbc.Driver</driver>
-					<url>jdbc:mysql://localhost:3306/movies_info?allowLoadLocalInfile=true</url>
-					<user>root</user>
-					<password>mysql</password>
+					<driver>com.mysql.cj.jdbc.Driver</driver>
+					<url>${database.url}</url>
+					<user>${database.username}</user>
+					<password>${database.password}</password>
 					<baselineOnMigrate>true</baselineOnMigrate>
 					<schemas>movies_info</schemas>
 					<locations>
@@ -109,6 +129,38 @@
 							filesystem:src/main/resources/db/migration
 						</location>
 					</locations>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-codegen-maven</artifactId>
+
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<configuration>
+					<jdbc>
+						<driver>com.mysql.cj.jdbc.Driver</driver>
+						<url>${database.url}</url>
+						<user>${database.username}</user>
+						<password>${database.password}</password>
+					</jdbc>
+					<generator>
+						<database>
+							<includes>.*</includes>
+							<inputSchema>movies_info</inputSchema>
+						</database>
+						<target>
+							<packageName>com.duda.backbaseassignment.infra.database.records</packageName>
+							<directory>src/main/kotlin</directory>
+						</target>
+					</generator>
 				</configuration>
 			</plugin>
 		</plugins>

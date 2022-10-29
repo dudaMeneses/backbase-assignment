@@ -1,5 +1,5 @@
 package com.duda.backbaseassignment.domain.port
 
-interface OscarWinnerProvider {
+interface OscarWinnerProvider
 
-}
+

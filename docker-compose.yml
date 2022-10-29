@@ -3,10 +3,11 @@ version: '3.3'
 services:
   database:
     image: 'mysql:8.0'
+    container_name: mysql
     restart: always
     environment:
       MYSQL_DATABASE: 'movies_info'
-      MYSQL_USER: 'mysql'
+      MYSQL_USER: 'user'
       MYSQL_PASSWORD: 'mysql'
       MYSQL_ROOT_PASSWORD: 'mysql'
     ports:
@@ -15,6 +16,7 @@ services:
       - '3306'
   cache:
     image: 'redis:6.2.7'
+    container_name: redis
     restart: always
     command: redis-server
     ports:

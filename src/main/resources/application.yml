@@ -1,1 +1,3 @@
+flyway:
+  errorOverrides: 1000:1262:D
 

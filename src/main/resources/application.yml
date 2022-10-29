@@ -7,3 +7,7 @@ spring:
     username: user
     password: mysql
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+server:
+  error:
+    include-message: always

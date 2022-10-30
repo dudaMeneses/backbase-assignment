@@ -7,7 +7,9 @@
 
 - Unit/Integration tests:
     ```
-    ./mvnw verify
+    ./mvnw verify -P integration-test
+    OR
+    Run 'All Tests' on IntelliJ
     ```
 - Swagger
     ```

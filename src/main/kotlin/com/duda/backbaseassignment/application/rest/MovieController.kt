@@ -30,7 +30,8 @@ class MovieController(
 
     @PostMapping(path = ["/ratings"])
     fun rateMovie(@RequestBody movieRating: MovieRatingRequest) {
-        rateMovieCommandHandler.handle(MovieRatingParam(rating =  movieRating.rating, movieTitle = movieRating.movieTitle))
+        // TODO get user id from token
+        rateMovieCommandHandler.handle(MovieRatingParam(rating =  movieRating.rating, movieTitle = movieRating.movieTitle, userId = 0))
     }
 
     @GetMapping(path = ["/ratings"])

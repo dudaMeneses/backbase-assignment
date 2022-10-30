@@ -5,6 +5,7 @@ import com.duda.backbaseassignment.domain.port.MovieInfoProvider
 import com.duda.backbaseassignment.domain.service.param.OscarNominationFilter
 import com.duda.backbaseassignment.infra.network.client.OmdbClient
 import com.duda.backbaseassignment.infra.network.client.response.OmdbMovieResponse
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
 
 @Component
@@ -12,8 +13,9 @@ class MovieInfoProviderAdapter(
     private val omdbClient: OmdbClient,
 ): MovieInfoProvider {
 
-    fun getMovieInfo(filter: OscarNominationFilter): Movie? {
-      return omdbClient.getMovieInformation(filter.nominee)?.toDomain()
+    @Cacheable("movieInfoCache")
+    override fun getMovieInfo(title: String): Movie? {
+      return omdbClient.getMovieInformation(title)?.toDomain()
     }
 
     private fun OmdbMovieResponse.toDomain() = Movie(

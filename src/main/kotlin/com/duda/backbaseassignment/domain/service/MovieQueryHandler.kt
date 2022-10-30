@@ -5,7 +5,7 @@ import com.duda.backbaseassignment.domain.service.param.MovieQueryFilter
 import org.springframework.stereotype.Service
 
 @Service
-class MovieQuery {
+class MovieQueryHandler {
     fun find(filter: MovieQueryFilter): MovieInfoResponse {
         TODO("to be implemented")
     }

@@ -8,7 +8,7 @@ import com.duda.backbaseassignment.domain.service.param.OscarNominationFilter
 import org.springframework.stereotype.Service
 
 @Service
-class OscarWinnerQuery(
+class OscarNominationQueryHandler(
     private val oscarNominationProvider: OscarNominationProvider
 ) {
     fun find(filter: OscarNominationFilter): NominationResponse {

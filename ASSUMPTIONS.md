@@ -5,9 +5,15 @@ To better split and organize what needs to be done I divided the functionalities
 ### Movie information and Oscar winners
 
 The [CSV](src/main/resources/data/academy_awards.csv) file already gives the nominated movies (winner and losers), 
-so even if the integration with OMDb fails, I can retrieve the most essential information, which is know if some movie won
-on the given category.
+so at this point it is not necessary to connect to `OMDb API` to retrieve the nominated and winner movies. If a movie is
+not found on `oscar_nominations` table an exception is retrieved, otherwise, information about movie the movie nominations
+will be the result
 
-With that on mind I set to search for the Oscar Nomination directly as a fallback when integration with OMDb fails (not adding to cache tho). 
-In case the integration goes fine, I save the movie data on DB to be able to retrieve box value in a search joining with `oscar_nomination` table.
+### Rating
 
+For the rating API it will be the first time that `OMDb API` will be used. Once the information from there hardly will change,
+I will cache that search, then preventing to go many times to the API and never (or hardly) extrapolate the limit of searches
+to it.
+
+Also, once it brings information from the API I will save it on DB to be able to have the movie `Box Office Value` and make a relation
+between `movie` and `rating` tables.

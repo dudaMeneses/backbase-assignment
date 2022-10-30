@@ -2,23 +2,30 @@
 
 ### Technology picks
 
-The initial idea for the core of this application is to use the `CSV` input file to populate the database and, by having this entrypoint, more decisions could be made.
+I opted to use `Kotlin` because I have been more familiarized to it recently and `spring-boot` because can pretty much given me
+everything I need (from `security` to spin up an `web` application).
 
-For that first part I opted for `Flyway` framework (`Liquibase` also could be an option, but I am more familiarised with Flyway). It guarantees that the database population will run only once and it will keep my database versioned and modifications will be safe and sequential, storing their states also on DB.
+To load data to my database (opted for `MySQL` mainly because it is on backbase tech stack) I opted for `FlyWay` (also because I've been more familiar to that, but the very same could be done via `Liquibase`). 
+Also, it gives me resources to version my database in my project.
 
-Once I have a DB structure populated, I start to get concerned about how to access that and how I can perform well given the requirements, so I opted here for `JooQ` and `Redis`.
+To access data on DB I opted for `JooQ`. Maybe it is an impopular opinion, but I am not the biggest fan of `spring-jpa` when it comes to
+performance. `JooQ` does better on that area (and also it is more flexible and create entities based on my DB modeling).
 
-`JooQ` gives me pretty much what I normally gain with `spring jpa`: my database entities reflected in code and a safe, concise, clean and simple way to access and store data (but without many `spring jpa` limitations, such as low performance and, in my opinion, hidden magic implementations).
+`resilience4j` will be used for resilience patterns (only `circuit breaker` was used on the assignment, but in a real life I would consider a `bulkhead` to not overload `OMDb API` with parallel calls).
 
-One of the core actions of the application is to inform if a movie won Oscar, given its title. This sort of information will never change and we already have the source of truth where we retrieve it. I think that `Redis` fits perfectly to retrieve an immutable piece of information very efficiently. Also, the application depends on integration with an external system (also to retrieve immutable information), so we could prevent unnecessary calls to external systems (specially because the _free version_ of this API has a limit of calls)
+To deal with local infrastructure spin up I opted for `Docker` using `docker-compose`, and to orchestrate the deployment, scaling, load balance and others, I went with `kubernetes`.
 
-`Docker` will be used to spin up our local environment. `Kubernetes` will be used to setup nodes and deployment rules. Not much to say here. They simply work pretty well for these tasks.
+For `testing` I could cover basically `integration`, `unit` and `contract tests`, for that I used `testcontainers` to simulate databases and test my queries, 
+`mockk` to stub unit tests data, `spring-test` to check serialization and deserialization of my contracts (both `OmdbClient` and my `Controller`)
+and, finally, `wiremock` to simulate responses from `OMDb API`.
 
 ### Architecture
 
 Let's start by the premise that *_no matter which technology choices I make, my domain logic must continue working_*. By saying that, DDD will be the design paradigm I will follow. Once I have that in mind, I also opt to go for the hexagonal architecture inside my code base, because I can make evident the separation between my domain logic, my infrastructure decisions and my application definitions.
 
-To keep my application depending on definitions, not implementations, I opt for `Ports and Adapters` pattern. Then if I decide to change my infrastructure, endpoints I use to integrate my application or whatever, it is already sufficiently isolated. Also, I opted to add `circuit breakers and bulkheads`, in case of instability when integrating with the `OMDb API`.
+To keep my application depending on definitions, not implementations, I opt for `Ports and Adapters` pattern. Then, if I decide to change my infrastructure, endpoints I use to integrate my application or whatever, it is already sufficiently isolated. Also, I opted to add `circuit breakers`, in case of instability when integrating with the `OMDb API`.
+
+Also, I opted by `CQRS` to keep simple and isolated the interactions with all the parts of my architecture. 
 
 ---
 
@@ -35,3 +42,4 @@ To keep my application depending on definitions, not implementations, I opt for 
 - resilience4j
 - testcontainers
 - wiremock
+- mockk

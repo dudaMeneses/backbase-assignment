@@ -37,6 +37,6 @@ class OmdbClient(
     }
 
     private fun fallback(movieTitle: String, throwable: Throwable): OmdbMovieResponse? {
-        throw OmdbIntegrationException(movieTitle)
+        throw OmdbIntegrationException(movieTitle, throwable)
     }
 }

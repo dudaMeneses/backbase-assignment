@@ -4,6 +4,6 @@ import java.math.BigDecimal
 
 data class Movie(
     val title: String,
-    val nominations: List<Nomination>,
-    val boxValue: BigDecimal? = null
+    val nominations: List<Nomination> = emptyList(),
+    val boxOfficeValue: BigDecimal? = null
 )

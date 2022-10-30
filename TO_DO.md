@@ -1,5 +1,6 @@
 #### Future Improvements
 
+- Not run `Flyway` on integration test profile 
 - Remove warnings from `Flyway` execution (columns not used)
 - Performance tests
 - API tests

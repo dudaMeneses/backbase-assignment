@@ -2,4 +2,15 @@ package com.duda.backbaseassignment.domain.model
 
 import com.duda.backbaseassignment.domain.model.valueObject.Category
 
-data class Nomination(val category: Category, val won: Boolean, val year: Int)
+abstract class Nomination {
+    abstract val category: Category
+    abstract val won: Boolean
+    abstract val year: Int
+}
+
+data class MovieNomination(
+    val movieTitle: String,
+    override val category: Category,
+    override val won: Boolean,
+    override val year: Int
+) : Nomination()

@@ -11,3 +11,7 @@ spring:
 server:
   error:
     include-message: always
+
+omdb:
+  url: http://www.omdbapi.com
+  token:

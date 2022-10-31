@@ -75,6 +75,23 @@ internal class MovieControllerIT {
     @Nested
     @DisplayName("Add Rating API")
     inner class AddRatingAPI {
+
+        @Test
+        fun `when rating is above 5 then return BAD REQUEST (400) status`(){
+            mockMvc.perform(MockMvcRequestBuilders.post("/movies/ratings")
+                .content(json("AboveRangeTest", 10))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest)
+        }
+
+        @Test
+        fun `when rating is below 0 then return BAD REQUEST (400) status`(){
+            mockMvc.perform(MockMvcRequestBuilders.post("/movies/ratings")
+                .content(json("AboveRangeTest", -1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest)
+        }
+
         @Test
         fun `when movie info not found then return NOT FOUND (404) status`(){
             `when`(rateMovieCommandHandler.handle(MovieRatingParam(0, "NotFoundTest", 2))).thenThrow(MovieInfoNotFoundException("NotFoundTest"))
@@ -109,6 +126,6 @@ internal class MovieControllerIT {
                 .andExpect(status().isCreated)
         }
 
-        private fun json(movieTitle: String): String = """{"rating":2,"movieTitle":"$movieTitle"}"""
+        private fun json(movieTitle: String, rating: Int = 2): String = """{"rating":$rating,"movieTitle":"$movieTitle"}"""
     }
 }

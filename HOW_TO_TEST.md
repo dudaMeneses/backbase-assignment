@@ -16,3 +16,7 @@
     ./mvnw compile spring-boot:run
     ```
   [Swagger URL](http://localhost:8080/documentation)
+
+---
+
+[Return to initial README](README.md)

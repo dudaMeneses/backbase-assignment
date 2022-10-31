@@ -17,3 +17,7 @@ to it.
 
 Also, once it brings information from the API I will save it on DB to be able to have the movie `Box Office Value` and make a relation
 between `movie` and `rating` tables.
+
+---
+
+[Return to initial README](README.md)

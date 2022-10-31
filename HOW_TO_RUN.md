@@ -13,3 +13,7 @@
     ```
     ./mvnw compile spring-boot:run
     ```
+
+---
+
+[Return to initial README](README.md)

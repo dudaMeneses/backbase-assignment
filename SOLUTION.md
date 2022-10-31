@@ -43,3 +43,7 @@ Also, I opted by `CQRS` to keep simple and isolated the interactions with all th
 - testcontainers
 - wiremock
 - mockk
+
+---
+
+[Return to initial README](README.md)

@@ -16,3 +16,7 @@ start using the application, it is possible to respond to the demand. Also, on `
 Talking about database connection, once the application is able to scale a connection pool should be configured on the DB side,
 but I didn't have time to create a performance test to hold millions of request to the application and check which connection pool, bulkheads
 and other configurations could be improved in order to guarantee that everything would be ok even if _"turbulent times"_ kick in
+
+---
+
+[Return to initial README](README.md)

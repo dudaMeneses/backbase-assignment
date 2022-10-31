@@ -10,6 +10,7 @@ import com.duda.backbaseassignment.domain.service.RateMovieCommandHandler
 import com.duda.backbaseassignment.domain.service.param.MovieQueryFilter
 import com.duda.backbaseassignment.domain.service.param.MovieRatingParam
 import com.duda.backbaseassignment.domain.service.param.OscarNominationFilter
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -28,6 +29,7 @@ class MovieController(
         return oscarNominationQueryHandler.find(OscarNominationFilter(nominee = movieTitle, category = category))
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = ["/ratings"])
     fun rateMovie(@RequestBody movieRating: MovieRatingRequest) {
         // TODO get user id from token

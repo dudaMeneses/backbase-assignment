@@ -17,4 +17,14 @@ class RatingRepositoryAdapter(private val dslContext: DSLContext): RatingReposit
             .set(RATING.MOVIE_ID, dslContext.select(MOVIE.ID).from(MOVIE).where(MOVIE.TITLE.eq(rating.movie)))
             .execute()
     }
+
+    override fun exists(movieTitle: String, userId: Long): Boolean {
+        return dslContext.fetchExists(dslContext.selectOne()
+            .from(RATING)
+            .join(MOVIE)
+            .on(RATING.MOVIE_ID.eq(MOVIE.ID))
+            .where(RATING.USER_ID.eq(userId))
+            .and(MOVIE.TITLE.eq(movieTitle))
+        )
+    }
 }

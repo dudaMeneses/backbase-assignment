@@ -1,3 +1,3 @@
 package com.duda.backbaseassignment.domain.service.param
 
-data class MovieQueryFilter(val page: Int, val size: Int)
+data class MovieQueryFilter(val pageIndex: Int, val size: Int)

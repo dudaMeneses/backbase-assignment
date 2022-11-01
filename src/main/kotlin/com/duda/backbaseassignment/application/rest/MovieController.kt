@@ -1,7 +1,7 @@
 package com.duda.backbaseassignment.application.rest
 
 import com.duda.backbaseassignment.application.rest.model.request.MovieRatingRequest
-import com.duda.backbaseassignment.application.rest.model.response.MovieInfoResponse
+import com.duda.backbaseassignment.application.rest.model.response.MovieRatingResponse
 import com.duda.backbaseassignment.application.rest.model.response.NominationResponse
 import com.duda.backbaseassignment.domain.model.valueObject.Category
 import com.duda.backbaseassignment.domain.service.MovieQueryHandler
@@ -38,9 +38,9 @@ class MovieController(
 
     @GetMapping(path = ["/ratings"])
     fun getMovies(
-        @RequestParam("page", required = true, defaultValue = "1") page: Int,
+        @RequestParam("pageIndex", required = true, defaultValue = "0") pageIndex: Int,
         @RequestParam("size", required = true, defaultValue = "10") size: Int
-    ): MovieInfoResponse {
-        return movieQueryHandler.find(MovieQueryFilter(page = page, size = size))
+    ): List<MovieRatingResponse> {
+        return movieQueryHandler.find(MovieQueryFilter(pageIndex = pageIndex, size = size))
     }
 }

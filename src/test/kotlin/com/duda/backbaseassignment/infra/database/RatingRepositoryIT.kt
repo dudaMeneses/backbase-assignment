@@ -23,7 +23,7 @@ import java.math.BigDecimal
 @Transactional
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(classes = [BackbaseAssignmentApplication::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-internal class RatingRepositoryAdapterIT: DatabaseTest() {
+internal class RatingRepositoryIT: DatabaseTest() {
 
     @Autowired
     private lateinit var ratingRepository: RatingRepository

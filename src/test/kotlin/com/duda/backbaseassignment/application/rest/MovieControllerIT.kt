@@ -3,23 +3,24 @@ package com.duda.backbaseassignment.application.rest
 import com.duda.backbaseassignment.BackbaseAssignmentApplication
 import com.duda.backbaseassignment.application.rest.model.response.NominationResponse
 import com.duda.backbaseassignment.domain.model.valueObject.Category
+import com.duda.backbaseassignment.domain.service.MovieQueryHandler
 import com.duda.backbaseassignment.domain.service.OscarNominationQueryHandler
 import com.duda.backbaseassignment.domain.service.RateMovieCommandHandler
 import com.duda.backbaseassignment.domain.service.exception.MovieInfoNotFoundException
 import com.duda.backbaseassignment.domain.service.exception.OscarNomineeNotFoundException
 import com.duda.backbaseassignment.domain.service.exception.UserAlreadyRatedMovieException
-import com.duda.backbaseassignment.domain.service.param.MovieRatingParam
-import com.duda.backbaseassignment.domain.service.param.OscarNominationFilter
+import com.duda.backbaseassignment.domain.service.param.MovieQueryFilter
+import com.ninjasquad.springmockk.MockkBean
+import io.mockk.every
+import io.mockk.slot
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
@@ -37,18 +38,21 @@ internal class MovieControllerIT {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
-    @MockBean
+    @MockkBean
     private lateinit var oscarNominationQueryHandler: OscarNominationQueryHandler
 
-    @MockBean
+    @MockkBean(relaxUnitFun = true)
     private lateinit var rateMovieCommandHandler: RateMovieCommandHandler
+
+    @MockkBean
+    private lateinit var movieQueryHandler: MovieQueryHandler
 
     @Nested
     @DisplayName("Oscar Nominations API")
     inner class OscarNominationsAPI {
         @Test
         fun `when movie not found then return NOT FOUND (404) status`() {
-            `when`(oscarNominationQueryHandler.find(OscarNominationFilter("TestNotFound", Category.BEST_PICTURE))).thenThrow(OscarNomineeNotFoundException("TestNotFound"))
+            every { oscarNominationQueryHandler.find(any()) } throws OscarNomineeNotFoundException("TestNotFound")
 
             val result = mockMvc.perform(MockMvcRequestBuilders.get(
                 "/movies/oscar-nominations?movieTitle={movieTitle}&category={category}",
@@ -61,8 +65,8 @@ internal class MovieControllerIT {
 
         @Test
         fun `when movie had a nomination then return OK (200) status and nomination information`(){
-            `when`(oscarNominationQueryHandler.find(OscarNominationFilter("HappyPathTest", Category.BEST_PICTURE)))
-                .thenReturn(NominationResponse(nominationYear = 2020, category = Category.BEST_PICTURE, true))
+            every { oscarNominationQueryHandler.find(any()) } returns NominationResponse(nominationYear = 2020, category = Category.BEST_PICTURE, true)
+
 
             mockMvc.perform(MockMvcRequestBuilders.get(
                 "/movies/oscar-nominations?movieTitle={movieTitle}&category={category}",
@@ -94,7 +98,7 @@ internal class MovieControllerIT {
 
         @Test
         fun `when movie info not found then return NOT FOUND (404) status`(){
-            `when`(rateMovieCommandHandler.handle(MovieRatingParam(0, "NotFoundTest", 2))).thenThrow(MovieInfoNotFoundException("NotFoundTest"))
+            every { rateMovieCommandHandler.handle(any()) } throws MovieInfoNotFoundException("NotFoundTest")
 
             val result = mockMvc.perform(MockMvcRequestBuilders.post("/movies/ratings")
                 .content(json("NotFoundTest"))
@@ -107,7 +111,7 @@ internal class MovieControllerIT {
 
         @Test
         fun `when rating already exists then return BAD REQUEST (400) status`(){
-            `when`(rateMovieCommandHandler.handle(MovieRatingParam(0, "BadRequestTest", 2))).thenThrow(UserAlreadyRatedMovieException("BadRequestTest", 0))
+            every { rateMovieCommandHandler.handle(any()) } throws UserAlreadyRatedMovieException("BadRequestTest", 0)
 
             val result = mockMvc.perform(MockMvcRequestBuilders.post("/movies/ratings")
                 .content(json("BadRequestTest"))
@@ -128,4 +132,22 @@ internal class MovieControllerIT {
 
         private fun json(movieTitle: String, rating: Int = 2): String = """{"rating":$rating,"movieTitle":"$movieTitle"}"""
     }
+
+    @Nested
+    @DisplayName("Find Movies API")
+    inner class FindMovies {
+
+        @Test
+        fun `when no query param is informed then defaults are used`(){
+            val filterCaptor = slot<MovieQueryFilter>()
+
+            every { movieQueryHandler.find(capture(filterCaptor)) } returns emptyList()
+
+            mockMvc.perform(MockMvcRequestBuilders.get("/movies/ratings"))
+                .andExpect(status().isOk)
+
+            assertEquals(MovieQueryFilter(0, 10), filterCaptor.captured)
+        }
+    }
+
 }

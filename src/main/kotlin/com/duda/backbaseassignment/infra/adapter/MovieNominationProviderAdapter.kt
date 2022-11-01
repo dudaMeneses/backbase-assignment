@@ -19,7 +19,7 @@ class MovieNominationProviderAdapter(
     private fun OscarNominationRecord.toDomain(): MovieNomination {
         return MovieNomination(
             movieTitle = nominee,
-            category = Category.values().first { it.text == category },
+            category = Category.valueFromText(category),
             year = year.toInt(),
             won = when(won.toInt()){ 1 -> true else -> false}
         )

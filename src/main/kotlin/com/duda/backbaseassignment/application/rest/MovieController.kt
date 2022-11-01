@@ -1,5 +1,6 @@
 package com.duda.backbaseassignment.application.rest
 
+import com.duda.backbaseassignment.application.config.security.JwtService
 import com.duda.backbaseassignment.application.rest.model.request.MovieRatingRequest
 import com.duda.backbaseassignment.application.rest.model.response.MovieRatingResponse
 import com.duda.backbaseassignment.application.rest.model.response.NominationResponse
@@ -19,6 +20,7 @@ class MovieController(
     private val oscarNominationQueryHandler: OscarNominationQueryHandler,
     private val movieQueryHandler: MovieQueryHandler,
     private val rateMovieCommandHandler: RateMovieCommandHandler,
+    private val jwtService: JwtService
 ) {
 
     @GetMapping(path = ["/oscar-nominations"])
@@ -31,9 +33,11 @@ class MovieController(
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = ["/ratings"])
-    fun rateMovie(@RequestBody movieRating: MovieRatingRequest) {
-        // TODO get user id from token
-        rateMovieCommandHandler.handle(MovieRatingParam(rating =  movieRating.rating, movieTitle = movieRating.movieTitle, userId = 0))
+    fun rateMovie(
+        @RequestHeader("userId", required = true) userId: Long,
+        @RequestBody movieRating: MovieRatingRequest
+    ) {
+        rateMovieCommandHandler.handle(MovieRatingParam(rating =  movieRating.rating, movieTitle = movieRating.movieTitle, userId = userId))
     }
 
     @GetMapping(path = ["/ratings"])

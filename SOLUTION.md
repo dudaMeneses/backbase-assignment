@@ -19,6 +19,8 @@ For `testing` I could cover basically `integration`, `unit` and `contract tests`
 `mockk` to stub unit tests data, `spring-test` to check serialization and deserialization of my contracts (both `OmdbClient` and my `Controller`)
 and, finally, `wiremock` to simulate responses from `OMDb API`.
 
+I used also `JWT` signatures encoded with `Base64` to have my API token and `spring-security` to guarantee that every endpoint have a `token` required.
+
 ### Architecture
 
 Let's start by the premise that *_no matter which technology choices I make, my domain logic must continue working_*. By saying that, DDD will be the design paradigm I will follow. Once I have that in mind, I also opt to go for the hexagonal architecture inside my code base, because I can make evident the separation between my domain logic, my infrastructure decisions and my application definitions.
@@ -43,7 +45,7 @@ Also, I opted by `CQRS` to keep simple and isolated the interactions with all th
 - testcontainers
 - wiremock
 - mockk
-
+- jjwt
 ---
 
 [Return to initial README](README.md)

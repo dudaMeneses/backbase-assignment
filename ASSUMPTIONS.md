@@ -18,6 +18,15 @@ to it.
 Also, once it brings information from the API I will save it on DB to be able to have the movie `Box Office Value` and make a relation
 between `movie` and `rating` tables.
 
+### Movies search
+
+For movies search (the one that returns ordered by average rating and box value) I decided to introduce paging and slicing.
+It goes aligned a bit with my concept of code scalability but also because "bring ten" sounds a bit arbitrary, but bring 10 as default
+sounds more ok-ish (of course I would question it more in a real world, but once I must create assumptions, that was mine).
+
+That being said, also validations were added for these filters to prevent heavy data processing (like top 100000000 movies rated). 
+Only will be returned rated movies. If no movies are rated, then an empty list will be returned
+
 ---
 
 [Return to initial README](README.md)

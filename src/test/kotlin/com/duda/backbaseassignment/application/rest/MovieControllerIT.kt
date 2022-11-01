@@ -148,6 +148,12 @@ internal class MovieControllerIT {
 
             assertEquals(MovieQueryFilter(0, 10), filterCaptor.captured)
         }
+
+        @Test
+        fun `when page size is ONE MILLION then returns BAD REQUEST (400)`(){
+            mockMvc.perform(MockMvcRequestBuilders.get("/movies/ratings?size=1000000"))
+                .andExpect(status().isBadRequest)
+        }
     }
 
 }

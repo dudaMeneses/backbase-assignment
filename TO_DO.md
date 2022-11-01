@@ -8,7 +8,7 @@
 - Metrics and monitoring
 - Add `apiKey` to a vault or secret manager
 - Improve exception handling coming from kotlin `init`
-
+- Proper `OAUTH` instead of weak `JWT` checkings
 ---
 
 [Return to initial README](README.md)

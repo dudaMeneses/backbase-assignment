@@ -14,4 +14,4 @@ server:
 
 omdb:
   url: http://www.omdbapi.com
-  token: b5351216
+  token: <apiKey>

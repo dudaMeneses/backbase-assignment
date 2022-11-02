@@ -1,6 +1,6 @@
 package com.duda.backbaseassignment.domain.service
 
-import com.duda.backbaseassignment.domain.model.MovieRating
+import com.duda.backbaseassignment.domain.service.dto.MovieRatingDTO
 import com.duda.backbaseassignment.domain.port.MovieRepository
 import com.duda.backbaseassignment.domain.service.param.MovieQueryFilter
 import io.mockk.MockKAnnotations
@@ -39,7 +39,7 @@ internal class MovieQueryHandlerTest {
     fun `returns same quantity that DB results`(quantity: Int) {
         every { movieRepository.findOrderedByBoxValue(any()) } returns IntStream.range(1, quantity + 1)
                     .mapToObj {
-                        MovieRating("Movie Test: $it", BigDecimal(100), 3)
+                        MovieRatingDTO("Movie Test: $it", BigDecimal(100), 3)
                     }
                     .toList()
 

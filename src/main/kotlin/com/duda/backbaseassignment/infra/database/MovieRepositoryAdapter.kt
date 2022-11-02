@@ -1,7 +1,7 @@
 package com.duda.backbaseassignment.infra.database
 
 import com.duda.backbaseassignment.domain.model.Movie
-import com.duda.backbaseassignment.domain.model.MovieRating
+import com.duda.backbaseassignment.domain.service.dto.MovieRatingDTO
 import com.duda.backbaseassignment.domain.port.MovieRepository
 import com.duda.backbaseassignment.domain.service.param.MovieQueryFilter
 import com.duda.backbaseassignment.infra.database.records.Tables.MOVIE
@@ -9,7 +9,6 @@ import com.duda.backbaseassignment.infra.database.records.Tables.RATING
 import org.jooq.DSLContext
 import org.jooq.impl.DSL.avg
 import org.springframework.stereotype.Repository
-import java.math.MathContext
 import kotlin.math.roundToInt
 
 @Repository
@@ -24,7 +23,7 @@ class MovieRepositoryAdapter(private val dslContext: DSLContext): MovieRepositor
             .execute()
     }
 
-    override fun findOrderedByBoxValue(filter: MovieQueryFilter): List<MovieRating> {
+    override fun findOrderedByBoxValue(filter: MovieQueryFilter): List<MovieRatingDTO> {
         return dslContext.select(MOVIE.TITLE, MOVIE.BOX_VALUE, avg(RATING.RATING_))
             .from(MOVIE)
             .join(RATING).on(MOVIE.ID.eq(RATING.MOVIE_ID))
@@ -32,7 +31,7 @@ class MovieRepositoryAdapter(private val dslContext: DSLContext): MovieRepositor
             .orderBy(avg(RATING.RATING_).desc(), MOVIE.BOX_VALUE.desc())
             .limit(filter.size)
             .offset(filter.pageIndex * filter.size)
-            .fetch { (title, boxValue, avgRating) -> MovieRating(title, boxValue, avgRating.toDouble().roundToInt().toShort()) }
+            .fetch { (title, boxValue, avgRating) -> MovieRatingDTO(title, boxValue, avgRating.toDouble().roundToInt().toShort()) }
     }
 
 }

@@ -2,7 +2,7 @@ package com.duda.backbaseassignment.infra.database
 
 import com.duda.backbaseassignment.BackbaseAssignmentApplication
 import com.duda.backbaseassignment.domain.model.Movie
-import com.duda.backbaseassignment.domain.model.MovieRating
+import com.duda.backbaseassignment.domain.service.dto.MovieRatingDTO
 import com.duda.backbaseassignment.domain.port.MovieRepository
 import com.duda.backbaseassignment.domain.service.param.MovieQueryFilter
 import com.duda.backbaseassignment.infra.database.records.Tables.MOVIE
@@ -74,7 +74,7 @@ internal class MovieRepositoryIT: DatabaseTest() {
             addRating(NEW_MOVIE, 0, 5)
 
             val result = movieRepository.findOrderedByBoxValue(MovieQueryFilter(0,10))
-            val expectation = MovieRating(title = NEW_MOVIE, averageRating = 5, boxValue = BigDecimal(100).setScale(2))
+            val expectation = MovieRatingDTO(title = NEW_MOVIE, averageRating = 5, boxValue = BigDecimal(100).setScale(2))
 
             assertEquals(expectation, result.firstOrNull())
         }
@@ -88,7 +88,7 @@ internal class MovieRepositoryIT: DatabaseTest() {
             }
 
             val result = movieRepository.findOrderedByBoxValue(MovieQueryFilter(0,10))
-            val expectation = MovieRating(title = NEW_MOVIE, averageRating = 3, boxValue = BigDecimal(100).setScale(2))
+            val expectation = MovieRatingDTO(title = NEW_MOVIE, averageRating = 3, boxValue = BigDecimal(100).setScale(2))
 
             assertEquals(expectation, result.firstOrNull())
         }

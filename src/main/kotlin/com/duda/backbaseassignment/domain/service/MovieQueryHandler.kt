@@ -1,7 +1,7 @@
 package com.duda.backbaseassignment.domain.service
 
 import com.duda.backbaseassignment.application.rest.model.response.MovieRatingResponse
-import com.duda.backbaseassignment.domain.model.MovieRating
+import com.duda.backbaseassignment.domain.service.dto.MovieRatingDTO
 import com.duda.backbaseassignment.domain.port.MovieRepository
 import com.duda.backbaseassignment.domain.service.param.MovieQueryFilter
 import org.springframework.stereotype.Service
@@ -12,5 +12,5 @@ class MovieQueryHandler(private val movieRepository: MovieRepository) {
         return movieRepository.findOrderedByBoxValue(filter).map { it.toResponse() }
     }
 
-    private fun MovieRating.toResponse(): MovieRatingResponse = MovieRatingResponse(this.title, this.boxValue, this.averageRating)
+    private fun MovieRatingDTO.toResponse(): MovieRatingResponse = MovieRatingResponse(this.title, this.boxValue, this.averageRating)
 }

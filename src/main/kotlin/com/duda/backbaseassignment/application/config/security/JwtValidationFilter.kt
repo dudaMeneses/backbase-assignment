@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest
 @Component
 class JwtValidationFilter(private val jwtService: JwtService): GenericFilterBean() {
 
-
     override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
         request as HttpServletRequest
 

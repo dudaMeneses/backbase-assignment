@@ -1,5 +1,6 @@
 package com.duda.backbaseassignment.application.config.security
 
+import org.apache.tomcat.util.collections.CaseInsensitiveKeyMap
 import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletRequestWrapper
@@ -7,7 +8,7 @@ import javax.servlet.http.HttpServletRequestWrapper
 
 class MutableHttpRequest(request: HttpServletRequest): HttpServletRequestWrapper(request) {
 
-    private val customHeaders: MutableMap<String, String> = HashMap()
+    private val customHeaders: CaseInsensitiveKeyMap<String> = CaseInsensitiveKeyMap()
 
     fun putHeader(name: String, value: String) {
         customHeaders[name] = value

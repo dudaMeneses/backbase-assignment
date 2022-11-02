@@ -1,6 +1,5 @@
 package com.duda.backbaseassignment.application.rest
 
-import com.duda.backbaseassignment.application.config.security.JwtService
 import com.duda.backbaseassignment.application.rest.model.request.MovieRatingRequest
 import com.duda.backbaseassignment.application.rest.model.response.MovieRatingResponse
 import com.duda.backbaseassignment.application.rest.model.response.NominationResponse
@@ -19,8 +18,7 @@ import org.springframework.web.bind.annotation.*
 class MovieController(
     private val oscarNominationQueryHandler: OscarNominationQueryHandler,
     private val movieQueryHandler: MovieQueryHandler,
-    private val rateMovieCommandHandler: RateMovieCommandHandler,
-    private val jwtService: JwtService
+    private val rateMovieCommandHandler: RateMovieCommandHandler
 ) {
 
     @GetMapping(path = ["/oscar-nominations"])

@@ -7,6 +7,10 @@
 ---
 ## How to run
 
+> Before running the application it is important to notice that the `omdb.token` property doesn't have a valid `apiKey`. It can be
+> generated for free at [OMDb API > API Key](http://www.omdbapi.com/apikey.aspx) page. After having that generated and received by email,
+> it is just necessary to set that value to `omdb.token` property at [application.yml](/src/main/resources/application.yml) file
+
 ### Debugging
 
 1. Spin up docker services (mysql and redis):

@@ -21,6 +21,11 @@
 		<database.password>mysql</database.password>
 		<testcontainers.version>1.17.5</testcontainers.version>
 		<jjwt.version>0.11.5</jjwt.version>
+		<openapi.version>1.6.12</openapi.version>
+		<r4j.version>1.7.1</r4j.version>
+		<wiremock.version>2.27.2</wiremock.version>
+		<mockk.version>1.13.2</mockk.version>
+		<springmockk.version>3.1.1</springmockk.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -75,7 +80,7 @@
 		<dependency>
 			<groupId>io.github.resilience4j</groupId>
 			<artifactId>resilience4j-spring-boot2</artifactId>
-			<version>1.7.1</version>
+			<version>${r4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
@@ -93,6 +98,21 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>${jjwt.version}</version>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${openapi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-kotlin</artifactId>
+			<version>${openapi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-security</artifactId>
+			<version>${openapi.version}</version>
 		</dependency>
 
 		<dependency>
@@ -121,19 +141,19 @@
 		<dependency>
 			<groupId>com.github.tomakehurst</groupId>
 			<artifactId>wiremock</artifactId>
-			<version>2.27.2</version>
+			<version>${wiremock.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.mockk</groupId>
 			<artifactId>mockk-jvm</artifactId>
-			<version>1.13.2</version>
+			<version>${mockk.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.ninja-squad</groupId>
 			<artifactId>springmockk</artifactId>
-			<version>3.1.1</version>
+			<version>${springmockk.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

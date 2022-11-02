@@ -12,10 +12,16 @@
     Run 'All Tests' on IntelliJ
     ```
 - Swagger
-    ```
-    ./mvnw compile spring-boot:run
-    ```
-  [Swagger URL](http://localhost:8080/documentation)
+  
+  - Run Application 
+      ```
+      ./mvnw compile spring-boot:run
+      ```
+  - Access [Swagger](http://localhost:8080/swagger-ui/index.html)
+  - Generate token via [GET Token API](http://localhost:8080/swagger-ui/index.html#/admin-controller/getToken)
+  - Use that token as `token` header param of every endpoint
+
+> [Swagger URL](http://localhost:8080/swagger-ui/index.html) will be accessible only while application is running
 
 ---
 

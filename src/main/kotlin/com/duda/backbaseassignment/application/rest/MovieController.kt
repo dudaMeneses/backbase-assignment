@@ -10,6 +10,7 @@ import com.duda.backbaseassignment.domain.service.RateMovieCommandHandler
 import com.duda.backbaseassignment.domain.service.param.MovieQueryFilter
 import com.duda.backbaseassignment.domain.service.param.MovieRatingParam
 import com.duda.backbaseassignment.domain.service.param.OscarNominationFilter
+import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -32,7 +33,7 @@ class MovieController(
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = ["/ratings"])
     fun rateMovie(
-        @RequestHeader("userId", required = true) userId: Long,
+        @Schema(hidden = true) @RequestHeader("userId", required = true) userId: Long,
         @RequestBody movieRating: MovieRatingRequest
     ) {
         rateMovieCommandHandler.handle(MovieRatingParam(rating =  movieRating.rating, movieTitle = movieRating.movieTitle, userId = userId))

@@ -14,7 +14,7 @@ class JwtValidationFilter(private val jwtService: JwtService): GenericFilterBean
     override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
         request as HttpServletRequest
 
-        val tokenHeader = request.getHeader("token") ?: throw MissingTokenHeaderException()
+        val tokenHeader = request.getHeader("token") ?: throw MissingTokenHeaderException(request)
 
         val mutableRequest = MutableHttpRequest(request)
         mutableRequest.putHeader("userId", jwtService.getUserId(tokenHeader).toString())

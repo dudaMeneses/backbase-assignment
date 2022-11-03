@@ -186,31 +186,6 @@
 				</dependencies>
 			</plugin>
 			<plugin>
-				<groupId>org.flywaydb</groupId>
-				<artifactId>flyway-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>migrate</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<driver>com.mysql.cj.jdbc.Driver</driver>
-					<url>${database.url}</url>
-					<user>${database.username}</user>
-					<password>${database.password}</password>
-					<baselineOnMigrate>true</baselineOnMigrate>
-					<schemas>movies_info</schemas>
-					<locations>
-						<location>
-							filesystem:src/main/resources/db/migration
-						</location>
-					</locations>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.jooq</groupId>
 				<artifactId>jooq-codegen-maven</artifactId>
 
@@ -261,6 +236,38 @@
 	</build>
 
 	<profiles>
+		<profile>
+			<id>deploy</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.flywaydb</groupId>
+						<artifactId>flyway-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>migrate</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<driver>com.mysql.cj.jdbc.Driver</driver>
+							<url>${database.url}</url>
+							<user>${database.username}</user>
+							<password>${database.password}</password>
+							<baselineOnMigrate>true</baselineOnMigrate>
+							<schemas>movies_info</schemas>
+							<locations>
+								<location>
+									filesystem:src/main/resources/db/migration
+								</location>
+							</locations>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 		<profile>
 			<id>integration-test</id>
 			<build>

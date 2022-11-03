@@ -33,19 +33,23 @@
    # export DOCKER_TLS_VERIFY, DOCKER_HOST, DOCKER_CERT_PATH 
    # according to what is returned from 'minikube docker-env' command
    ```
-3. Compile application
+3. Generate application package (`.jar` file) 
    ```
-   .\mvnw clean package
+   ./mvnw clean package
    ```
 4. Build `docker` image
    ```
    docker build -t backbase-assignment:1.0 .
    ```
-5. Run `kubectl` to apply deployment
+5. Start DB and cache
    ```
-   kubectl apply -f infra\deployment.yaml
+   docker compose up -d
    ```
-6. Check `minikube` ip address
+6. Run `kubectl` to apply deployment
+   ```
+   kubectl apply -f infra/deployment.yaml
+   ```
+7. Check `minikube` ip address
    ```
    minikube ip
    ```

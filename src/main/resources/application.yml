@@ -1,6 +1,9 @@
 flyway:
   errorOverrides: 1000:1262:D
   schemas: movies_info
+  url: jdbc:mysql://mysql-db-svc:3306/movies_info?allowLoadLocalInfile=true
+  user: root
+  password: mysql
 
 spring:
   datasource:

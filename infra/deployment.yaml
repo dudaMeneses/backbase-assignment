@@ -2,11 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backbase-assignment
+  labels:
+    app: backbase-assignment
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: backbase-assignment
-  replicas: 1
   template:
     metadata:
       labels:
@@ -15,7 +17,7 @@ spec:
       containers:
         - name: backbase-assignment
           image: backbase-assignment:1.0
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
           resources:
@@ -23,6 +25,28 @@ spec:
               cpu: 500m
             requests:
               cpu: 200m
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap
+                  key: database_url
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap
+                  key: database_user
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap
+                  key: database_password
+            - name: OMDB_TOKEN
+              value: <apiKey>
+      volumes:
+        - name: mysql-persistance-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
 ---
 apiVersion: v1
 kind: Service
@@ -39,10 +63,10 @@ spec:
       protocol: TCP
   type: LoadBalancer
 ---
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: backbase-assignment
+  name: backbase-assignment-hpa
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -57,3 +81,81 @@ spec:
         target:
           type: Utilization
           averageUtilization: 50
+#####################
+# DATABASE DEPLOYMENT
+#####################
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: movies_info
+            - name: MYSQL_USER
+              value: user
+            - name: MYSQL_PASSWORD
+              value: mysql
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mysql-persistance-storage
+      volumes:
+        - name: mysql-persistance-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    run: mysql
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: mysql
+  type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: mysql
+    tier: database
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: mysql-configmap
+data:
+  database_url: jdbc:mysql://mysql:3306/movies_info?allowLoadLocalInfile=true&useSSL=false&createDatabaseIfNotExist=true&autoReconnect=true
+  database_user: "user"
+  database_password: "mysql"

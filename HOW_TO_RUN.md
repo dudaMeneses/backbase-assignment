@@ -19,7 +19,7 @@
    ```
 2. Run it on the IDE *OR* run `./mvnw spring-boot:run`
 
-### Kubernetes
+### Kubernetes (PRO)
 
 1. Start `minikube`
    ```
@@ -35,21 +35,17 @@
    ```
 3. Generate application package (`.jar` file) 
    ```
-   ./mvnw clean package
+   ./mvnw clean package -P pro
    ```
 4. Build `docker` image
    ```
    docker build -t backbase-assignment:1.0 .
    ```
-5. Start DB and cache
-   ```
-   docker compose up -d
-   ```
-6. Run `kubectl` to apply deployment
+5. Run `kubectl` to apply deployment
    ```
    kubectl apply -f infra/deployment.yaml
    ```
-7. Check `minikube` ip address
+6. Check `minikube` ip address
    ```
    minikube ip
    ```

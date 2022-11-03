@@ -1,21 +1,12 @@
-flyway:
-  errorOverrides: 1000:1262:D
-  schemas: movies_info
-  url: ${DB_HOST}
-  user: ${DB_USER}
-  password: ${DB_PASSWORD}
-
 spring:
   datasource:
     url: ${DB_HOST}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-server:
-  error:
-    include-message: always
+  flyway:
+    url: ${DB_HOST}
+    user: ${DB_ROOT_USER}
+    password: ${DB_PASSWORD}
 
 omdb:
-  url: http://www.omdbapi.com
   token: ${OMDB_TOKEN}

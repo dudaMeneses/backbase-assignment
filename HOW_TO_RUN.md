@@ -35,15 +35,16 @@
    ```
 3. Generate application package (`.jar` file) 
    ```
-   ./mvnw clean package -P pro
+   ./mvnw clean package
    ```
 4. Build `docker` image
    ```
-   docker build -t backbase-assignment:1.0 .
+   docker build -t backbase-assignment .
    ```
-5. Run `kubectl` to apply deployment
+5. Run `kubectl` to deploy `mysql` and `application`
    ```
-   kubectl apply -f infra/deployment.yaml
+   kubectl apply -f infra/database.yaml
+   kubectl apply -f infra/application.yaml
    ```
 6. Check `minikube` ip address
    ```

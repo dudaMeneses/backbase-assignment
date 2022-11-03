@@ -15,6 +15,7 @@
   
   - Run Application 
       ```
+      docker compose up -d
       ./mvnw compile spring-boot:run
       ```
   - Access [Swagger](http://localhost:8080/swagger-ui/index.html)

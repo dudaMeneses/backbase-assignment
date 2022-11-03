@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backbase-assignment-mysql
+  labels:
+    app: backbase-assignment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backbase-assignment
+      tier: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: backbase-assignment
+        tier: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap
+                  key: database_password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap
+                  key: database
+            - name: MYSQL_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: database_user
+                  name: mysql-configmap
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap
+                  key: database_password
+          args:
+            - --local-infile=ON
+            - --character-set-server=latin1
+            - --collation-server=latin1_swedish_ci
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mysql-persistance-storage
+      volumes:
+        - name: mysql-persistance-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backbase-assignment-mysql
+  labels:
+    run: backbase-assignment
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: backbase-assignment
+    tier: mysql
+  clusterIP: None
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: backbase-assignment
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: mysql-configmap
+data:
+  database_url: jdbc:mysql://backbase-assignment-mysql:3306/movies_info?allowLoadLocalInfile=true&useSSL=false&allowPublicKeyRetrieval=True
+  database_user: "user"
+  database_root_user: "root"
+  database_password: "mysql"
+  database: movies_info

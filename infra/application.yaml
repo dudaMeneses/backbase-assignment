@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backbase-assignment-server
+  labels:
+    app: backbase-assignment-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backbase-assignment-server
+  template:
+    metadata:
+      labels:
+        app: backbase-assignment-server
+    spec:
+      containers:
+        - name: backbase-assignment-server
+          image: backbase-assignment
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          resources:
+            limits:
+              cpu: 500m
+              memory: "500Mi"
+            requests:
+              cpu: 200m
+              memory: "200Mi"
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap
+                  key: database_url
+            - name: DB_ROOT_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: database_root_user
+                  name: mysql-configmap
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap
+                  key: database_user
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap
+                  key: database_password
+            - name: OMDB_TOKEN
+              value: <apiKey>
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backbase-assignment-server
+  labels:
+    run: backbase-assignment-server
+spec:
+  selector:
+    app: backbase-assignment-server
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http
+  type: NodePort
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: backbase-assignment-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backbase-assignment-server
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50

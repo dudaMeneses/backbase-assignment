@@ -1,3 +1,6 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/dudameneses/backbase-assignment/badge)](https://www.codefactor.io/repository/github/dudameneses/backbase-assignment)
+
+
 # Backbase Assignment
 
 > The goal of the technical test is to create a Java web application.

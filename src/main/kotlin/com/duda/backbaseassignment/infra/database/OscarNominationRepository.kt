@@ -1,8 +1,8 @@
 package com.duda.backbaseassignment.infra.database
 
 import com.duda.backbaseassignment.domain.service.param.OscarNominationFilter
-import com.duda.backbaseassignment.infra.database.records.Tables
-import com.duda.backbaseassignment.infra.database.records.tables.records.OscarNominationRecord
+import com.duda.backbaseassignment.generated.Tables
+import com.duda.backbaseassignment.generated.tables.records.OscarNominationRecord
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
 

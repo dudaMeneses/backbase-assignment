@@ -1,5 +1,5 @@
 CREATE TABLE movie(
-    id SERIAL PRIMARY KEY,
+    id INT PRIMARY KEY,
     title VARCHAR(255) UNIQUE NOT NULL,
     box_value DECIMAL(12,2)
 )

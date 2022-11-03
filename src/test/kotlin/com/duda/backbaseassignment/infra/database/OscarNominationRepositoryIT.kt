@@ -2,8 +2,8 @@ package com.duda.backbaseassignment.infra.database
 
 import com.duda.backbaseassignment.domain.model.valueObject.Category
 import com.duda.backbaseassignment.domain.service.param.OscarNominationFilter
-import com.duda.backbaseassignment.infra.database.records.Tables
-import com.duda.backbaseassignment.infra.database.records.tables.records.OscarNominationRecord
+import com.duda.backbaseassignment.generated.Tables
+import com.duda.backbaseassignment.generated.tables.records.OscarNominationRecord
 import com.duda.backbaseassignment.integration.IntegrationTest
 import org.jooq.DSLContext
 import org.junit.jupiter.api.Assertions.*
@@ -27,7 +27,7 @@ internal class OscarNominationRepositoryIT: IntegrationTest() {
 
         val nomination: OscarNominationRecord? = oscarNominationRepository.find(OscarNominationFilter("Chicago", Category.BEST_PICTURE))
 
-        assertEquals(1, nomination!!.won)
+        assertTrue(nomination!!.won)
     }
 
     @Test
@@ -36,7 +36,7 @@ internal class OscarNominationRepositoryIT: IntegrationTest() {
 
         val nomination: OscarNominationRecord? = oscarNominationRepository.find(OscarNominationFilter("Bugsy", Category.BEST_PICTURE))
 
-        assertEquals(0, nomination!!.won)
+        assertFalse(nomination!!.won)
     }
 
     @Test
@@ -49,7 +49,7 @@ internal class OscarNominationRepositoryIT: IntegrationTest() {
     fun insertOscarNomination(movieTitle: String, won: Boolean){
             dslContext.insertInto(Tables.OSCAR_NOMINATION)
                 .set(Tables.OSCAR_NOMINATION.NOMINEE, movieTitle)
-                .set(Tables.OSCAR_NOMINATION.WON, when(won){true -> 1 else -> 0})
+                .set(Tables.OSCAR_NOMINATION.WON, won)
                 .set(Tables.OSCAR_NOMINATION.YEAR, 2010)
                 .set(Tables.OSCAR_NOMINATION.CATEGORY, Category.BEST_PICTURE.text)
                 .execute()

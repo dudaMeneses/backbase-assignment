@@ -1,5 +1,6 @@
 flyway:
   errorOverrides: 1000:1262:D
+  schemas: movies_info
 
 spring:
   datasource:

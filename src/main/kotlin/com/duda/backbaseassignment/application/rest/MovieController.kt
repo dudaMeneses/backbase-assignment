@@ -33,7 +33,7 @@ class MovieController(
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = ["/ratings"])
     fun rateMovie(
-        @Schema(hidden = true) @RequestHeader("userId", required = true) userId: Long,
+        @Schema(hidden = true) @RequestHeader("userId", required = true) userId: Int,
         @RequestBody movieRating: MovieRatingRequest
     ) {
         rateMovieCommandHandler.handle(MovieRatingParam(rating =  movieRating.rating, movieTitle = movieRating.movieTitle, userId = userId))

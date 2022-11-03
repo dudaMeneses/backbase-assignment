@@ -3,9 +3,9 @@ package com.duda.backbaseassignment.infra.database
 import com.duda.backbaseassignment.BackbaseAssignmentApplication
 import com.duda.backbaseassignment.domain.model.Rating
 import com.duda.backbaseassignment.domain.port.RatingRepository
-import com.duda.backbaseassignment.infra.database.records.Tables.MOVIE
-import com.duda.backbaseassignment.infra.database.records.Tables.RATING
-import com.duda.backbaseassignment.infra.database.records.tables.records.RatingRecord
+import com.duda.backbaseassignment.generated.Tables.MOVIE
+import com.duda.backbaseassignment.generated.Tables.RATING
+import com.duda.backbaseassignment.generated.tables.records.RatingRecord
 import com.duda.backbaseassignment.integration.IntegrationTest
 import org.jooq.DSLContext
 import org.jooq.exception.DataAccessException
@@ -99,7 +99,7 @@ internal class RatingRepositoryIT: IntegrationTest() {
             .execute()
     }
 
-    fun getRating(title: String, user: Long): RatingRecord? {
+    fun getRating(title: String, user: Int): RatingRecord? {
         return dslContext.select()
             .from(RATING)
             .where(RATING.MOVIE_ID.eq(dslContext.select(MOVIE.ID).from(MOVIE).where(MOVIE.TITLE.eq(title))))

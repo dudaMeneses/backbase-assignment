@@ -1,7 +1,7 @@
 package com.duda.backbaseassignment.domain.service.param
 
 data class MovieRatingParam(
-    val userId: Long,
+    val userId: Int,
     val movieTitle: String,
     val rating: Short
 )

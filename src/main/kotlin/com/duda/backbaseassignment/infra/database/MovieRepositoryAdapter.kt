@@ -4,8 +4,8 @@ import com.duda.backbaseassignment.domain.model.Movie
 import com.duda.backbaseassignment.domain.service.dto.MovieRatingDTO
 import com.duda.backbaseassignment.domain.port.MovieRepository
 import com.duda.backbaseassignment.domain.service.param.MovieQueryFilter
-import com.duda.backbaseassignment.infra.database.records.Tables.MOVIE
-import com.duda.backbaseassignment.infra.database.records.Tables.RATING
+import com.duda.backbaseassignment.generated.Tables.MOVIE
+import com.duda.backbaseassignment.generated.Tables.RATING
 import org.jooq.DSLContext
 import org.jooq.impl.DSL.avg
 import org.springframework.stereotype.Repository

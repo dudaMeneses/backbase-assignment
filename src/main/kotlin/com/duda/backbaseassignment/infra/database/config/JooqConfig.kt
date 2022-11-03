@@ -19,7 +19,7 @@ class JooqConfig {
     fun dslContext(dataSource: DataSource): DSLContext {
         val settings = Settings()
             .withRenderQuotedNames(RenderQuotedNames.NEVER)
-            .withRenderNameCase(RenderNameCase.AS_IS)
+            .withRenderNameCase(RenderNameCase.LOWER)
 
         return DSL.using(DataSourceConnectionProvider(TransactionAwareDataSourceProxy(dataSource)), SQLDialect.MYSQL, settings)
     }

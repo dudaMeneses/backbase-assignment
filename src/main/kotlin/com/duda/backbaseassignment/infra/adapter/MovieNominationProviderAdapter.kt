@@ -4,8 +4,8 @@ import com.duda.backbaseassignment.domain.model.MovieNomination
 import com.duda.backbaseassignment.domain.model.valueObject.Category
 import com.duda.backbaseassignment.domain.port.OscarNominationProvider
 import com.duda.backbaseassignment.domain.service.param.OscarNominationFilter
+import com.duda.backbaseassignment.generated.tables.records.OscarNominationRecord
 import com.duda.backbaseassignment.infra.database.OscarNominationRepository
-import com.duda.backbaseassignment.infra.database.records.tables.records.OscarNominationRecord
 import org.springframework.stereotype.Component
 
 @Component
@@ -21,7 +21,7 @@ class MovieNominationProviderAdapter(
             movieTitle = nominee,
             category = Category.valueFromText(category),
             year = year.toInt(),
-            won = when(won.toInt()){ 1 -> true else -> false}
+            won = won
         )
     }
 }

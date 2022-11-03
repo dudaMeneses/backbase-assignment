@@ -1,12 +1,11 @@
 package com.duda.backbaseassignment.infra.database
 
-import com.duda.backbaseassignment.BackbaseAssignmentApplication
 import com.duda.backbaseassignment.domain.model.Movie
-import com.duda.backbaseassignment.domain.service.dto.MovieRatingDTO
 import com.duda.backbaseassignment.domain.port.MovieRepository
+import com.duda.backbaseassignment.domain.service.dto.MovieRatingDTO
 import com.duda.backbaseassignment.domain.service.param.MovieQueryFilter
-import com.duda.backbaseassignment.infra.database.records.Tables.MOVIE
-import com.duda.backbaseassignment.infra.database.records.Tables.RATING
+import com.duda.backbaseassignment.generated.Tables.MOVIE
+import com.duda.backbaseassignment.generated.Tables.RATING
 import com.duda.backbaseassignment.integration.IntegrationTest
 import org.jooq.DSLContext
 import org.junit.jupiter.api.Assertions.*
@@ -14,9 +13,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 
 private const val NEW_MOVIE = "NewMovieTest"
@@ -82,7 +79,7 @@ internal class MovieRepositoryIT: IntegrationTest() {
             insertMovie(NEW_MOVIE)
 
             for (rating in 1..5) {
-                addRating(NEW_MOVIE, rating.toLong(), rating.toShort())
+                addRating(NEW_MOVIE, rating, rating.toShort())
             }
 
             val result = movieRepository.findOrderedByBoxValue(MovieQueryFilter(0,10))
@@ -97,7 +94,7 @@ internal class MovieRepositoryIT: IntegrationTest() {
                 val movieTitle = "$NEW_MOVIE: $movieIndex"
                 insertMovie(movieTitle)
                 for (rating in 3..5) {
-                    addRating(movieTitle, rating.toLong(), rating.toShort())
+                    addRating(movieTitle, rating, rating.toShort())
                 }
             }
 
@@ -105,7 +102,7 @@ internal class MovieRepositoryIT: IntegrationTest() {
                 val movieTitle = "$NEW_MOVIE: $movieIndex"
                 insertMovie(movieTitle)
                 for (rating in 0..3) {
-                    addRating(movieTitle, rating.toLong(), rating.toShort())
+                    addRating(movieTitle, rating, rating.toShort())
                 }
             }
 
@@ -117,7 +114,7 @@ internal class MovieRepositoryIT: IntegrationTest() {
         }
     }
 
-    private fun addRating(movieTitle: String, userId: Long, rating: Short) {
+    private fun addRating(movieTitle: String, userId: Int, rating: Short) {
         dslContext.insertInto(RATING)
             .set(RATING.RATING_, rating)
             .set(RATING.USER_ID, userId)

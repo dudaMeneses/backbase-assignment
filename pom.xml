@@ -19,7 +19,7 @@
 		<database.url>jdbc:mysql://localhost:3306/movies_info?allowLoadLocalInfile=true</database.url>
 		<database.username>root</database.username>
 		<database.password>mysql</database.password>
-		<testcontainers.version>1.17.5</testcontainers.version>
+		<testcontainers.version>1.16.0</testcontainers.version>
 		<jjwt.version>0.11.5</jjwt.version>
 		<openapi.version>1.6.12</openapi.version>
 		<r4j.version>1.7.1</r4j.version>
@@ -185,12 +185,84 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>migrate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<driver>com.mysql.cj.jdbc.Driver</driver>
+					<url>${database.url}</url>
+					<user>${database.username}</user>
+					<password>${database.password}</password>
+					<baselineOnMigrate>true</baselineOnMigrate>
+					<schemas>movies_info</schemas>
+					<locations>
+						<location>
+							filesystem:src/main/resources/db/migration
+						</location>
+					</locations>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-codegen-maven</artifactId>
+
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<configuration>
+					<generator>
+						<database>
+							<name>org.jooq.meta.extensions.ddl.DDLDatabase</name>
+							<properties>
+								<property>
+									<key>scripts</key>
+									<value>src/main/resources/db/migration/*table.sql</value>
+								</property>
+								<property>
+									<key>sort</key>
+									<value>flyway</value>
+								</property>
+								<property>
+									<key>defaultNameCase</key>
+									<value>as_is</value>
+								</property>
+							</properties>
+							<unsignedTypes>true</unsignedTypes>
+						</database>
+						<target>
+							<packageName>com.duda.backbaseassignment.generated</packageName>
+							<directory>target/generated-records</directory>
+						</target>
+					</generator>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.jooq</groupId>
+						<artifactId>jooq-meta-extensions</artifactId>
+						<version>${jooq.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 		</plugins>
 	</build>
 
 	<profiles>
 		<profile>
-			<id>local</id>
+			<id>integration-test</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -198,60 +270,24 @@
 						<artifactId>flyway-maven-plugin</artifactId>
 						<executions>
 							<execution>
-								<phase>generate-sources</phase>
-								<goals>
-									<goal>migrate</goal>
-								</goals>
+								<phase>none</phase>
 							</execution>
 						</executions>
-						<configuration>
-							<driver>com.mysql.cj.jdbc.Driver</driver>
-							<url>${database.url}</url>
-							<user>${database.username}</user>
-							<password>${database.password}</password>
-							<baselineOnMigrate>true</baselineOnMigrate>
-							<schemas>movies_info</schemas>
-							<locations>
-								<location>
-									filesystem:src/main/resources/db/migration
-								</location>
-							</locations>
-						</configuration>
 					</plugin>
 					<plugin>
-						<groupId>org.jooq</groupId>
-						<artifactId>jooq-codegen-maven</artifactId>
-
+						<artifactId>maven-failsafe-plugin</artifactId>
 						<executions>
 							<execution>
-								<phase>generate-sources</phase>
 								<goals>
-									<goal>generate</goal>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
 								</goals>
 							</execution>
 						</executions>
-
-						<configuration>
-							<jdbc>
-								<driver>com.mysql.cj.jdbc.Driver</driver>
-								<url>${database.url}</url>
-								<user>${database.username}</user>
-								<password>${database.password}</password>
-							</jdbc>
-							<generator>
-								<database>
-									<includes>.*</includes>
-									<inputSchema>movies_info</inputSchema>
-								</database>
-								<target>
-									<packageName>com.duda.backbaseassignment.infra.database.records</packageName>
-									<directory>src/main/kotlin</directory>
-								</target>
-							</generator>
-						</configuration>
 					</plugin>
 				</plugins>
 			</build>
+
 		</profile>
 	</profiles>
 

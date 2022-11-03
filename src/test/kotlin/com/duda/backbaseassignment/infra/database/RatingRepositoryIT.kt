@@ -6,7 +6,7 @@ import com.duda.backbaseassignment.domain.port.RatingRepository
 import com.duda.backbaseassignment.infra.database.records.Tables.MOVIE
 import com.duda.backbaseassignment.infra.database.records.Tables.RATING
 import com.duda.backbaseassignment.infra.database.records.tables.records.RatingRecord
-import com.duda.backbaseassignment.integration.DatabaseTest
+import com.duda.backbaseassignment.integration.IntegrationTest
 import org.jooq.DSLContext
 import org.jooq.exception.DataAccessException
 import org.junit.jupiter.api.Assertions.*
@@ -23,7 +23,7 @@ import java.math.BigDecimal
 @Transactional
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(classes = [BackbaseAssignmentApplication::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-internal class RatingRepositoryIT: DatabaseTest() {
+internal class RatingRepositoryIT: IntegrationTest() {
 
     @Autowired
     private lateinit var ratingRepository: RatingRepository

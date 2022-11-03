@@ -185,64 +185,74 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-			<plugin>
-				<groupId>org.flywaydb</groupId>
-				<artifactId>flyway-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>migrate</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<driver>com.mysql.cj.jdbc.Driver</driver>
-					<url>${database.url}</url>
-					<user>${database.username}</user>
-					<password>${database.password}</password>
-					<baselineOnMigrate>true</baselineOnMigrate>
-					<schemas>movies_info</schemas>
-					<locations>
-						<location>
-							filesystem:src/main/resources/db/migration
-						</location>
-					</locations>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.jooq</groupId>
-				<artifactId>jooq-codegen-maven</artifactId>
-
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-
-				<configuration>
-					<jdbc>
-						<driver>com.mysql.cj.jdbc.Driver</driver>
-						<url>${database.url}</url>
-						<user>${database.username}</user>
-						<password>${database.password}</password>
-					</jdbc>
-					<generator>
-						<database>
-							<includes>.*</includes>
-							<inputSchema>movies_info</inputSchema>
-						</database>
-						<target>
-							<packageName>com.duda.backbaseassignment.infra.database.records</packageName>
-							<directory>src/main/kotlin</directory>
-						</target>
-					</generator>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>local</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.flywaydb</groupId>
+						<artifactId>flyway-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>migrate</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<driver>com.mysql.cj.jdbc.Driver</driver>
+							<url>${database.url}</url>
+							<user>${database.username}</user>
+							<password>${database.password}</password>
+							<baselineOnMigrate>true</baselineOnMigrate>
+							<schemas>movies_info</schemas>
+							<locations>
+								<location>
+									filesystem:src/main/resources/db/migration
+								</location>
+							</locations>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.jooq</groupId>
+						<artifactId>jooq-codegen-maven</artifactId>
+
+						<executions>
+							<execution>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+							</execution>
+						</executions>
+
+						<configuration>
+							<jdbc>
+								<driver>com.mysql.cj.jdbc.Driver</driver>
+								<url>${database.url}</url>
+								<user>${database.username}</user>
+								<password>${database.password}</password>
+							</jdbc>
+							<generator>
+								<database>
+									<includes>.*</includes>
+									<inputSchema>movies_info</inputSchema>
+								</database>
+								<target>
+									<packageName>com.duda.backbaseassignment.infra.database.records</packageName>
+									<directory>src/main/kotlin</directory>
+								</target>
+							</generator>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>

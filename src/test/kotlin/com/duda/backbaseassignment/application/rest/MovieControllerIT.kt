@@ -11,6 +11,7 @@ import com.duda.backbaseassignment.domain.service.exception.MovieInfoNotFoundExc
 import com.duda.backbaseassignment.domain.service.exception.OscarNomineeNotFoundException
 import com.duda.backbaseassignment.domain.service.exception.UserAlreadyRatedMovieException
 import com.duda.backbaseassignment.domain.service.param.MovieQueryFilter
+import com.duda.backbaseassignment.integration.IntegrationTest
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.slot
@@ -33,12 +34,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
 
-@Transactional
 @AutoConfigureMockMvc
-@ActiveProfiles("integration-test")
 @ExtendWith(SpringExtension::class)
-@SpringBootTest(classes = [BackbaseAssignmentApplication::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-internal class MovieControllerIT {
+internal class MovieControllerIT: IntegrationTest() {
 
     @Autowired
     private lateinit var mockMvc: MockMvc

@@ -7,7 +7,7 @@ import com.duda.backbaseassignment.domain.port.MovieRepository
 import com.duda.backbaseassignment.domain.service.param.MovieQueryFilter
 import com.duda.backbaseassignment.infra.database.records.Tables.MOVIE
 import com.duda.backbaseassignment.infra.database.records.Tables.RATING
-import com.duda.backbaseassignment.integration.DatabaseTest
+import com.duda.backbaseassignment.integration.IntegrationTest
 import org.jooq.DSLContext
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Nested
@@ -22,10 +22,8 @@ import java.math.BigDecimal
 private const val NEW_MOVIE = "NewMovieTest"
 private const val UPDATE_MOVIE = "UpdateMovieTest"
 
-@Transactional
 @ExtendWith(SpringExtension::class)
-@SpringBootTest(classes = [BackbaseAssignmentApplication::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-internal class MovieRepositoryIT: DatabaseTest() {
+internal class MovieRepositoryIT: IntegrationTest() {
 
     @Autowired
     private lateinit var movieRepository: MovieRepository

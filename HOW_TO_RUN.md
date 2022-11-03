@@ -24,19 +24,27 @@
 1. Start `minikube`
    ```
    minikube start
-   # in case of problems, try to run with --force option
+   # in case of problems, try to run with --force option or restart your Docker
    ```
-2. Compile application
+2. Allow `minikube` to read from local docker repository
    ```
-   ./mvnw clean compile
+   eval $(minikube -p minikube docker-env)
+   # if windows, you need to export the local docker repository configuration
+   # export DOCKER_TLS_VERIFY="1"
+   # export DOCKER_HOST="tcp://127.0.0.1:51200"
+   # export DOCKER_CERT_PATH="C:\Users\eduar\.minikube\certs"
    ```
-3. Build `docker` image
+3. Compile application
+   ```
+   .\mvnw clean package
+   ```
+4. Build `docker` image
    ```
    docker build -t backbase-assignment:1.0 .
    ```
-4. Run `kubectl` to apply deployment
+5. Run `kubectl` to apply deployment
    ```
-   kubectl apply -f /infra/deployment.yaml
+   kubectl apply -f infra\deployment.yaml
    ```
 > You can observe the k8s dashboard using `minikube dashboard` command after deployment
 ---

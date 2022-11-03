@@ -30,9 +30,8 @@
    ```
    eval $(minikube -p minikube docker-env)
    # if windows, you need to export the local docker repository configuration
-   # export DOCKER_TLS_VERIFY="1"
-   # export DOCKER_HOST="tcp://127.0.0.1:51200"
-   # export DOCKER_CERT_PATH="C:\Users\eduar\.minikube\certs"
+   # export DOCKER_TLS_VERIFY, DOCKER_HOST, DOCKER_CERT_PATH 
+   # according to what is returned from 'minikube docker-env' command
    ```
 3. Compile application
    ```
@@ -46,6 +45,12 @@
    ```
    kubectl apply -f infra\deployment.yaml
    ```
+6. Check `minikube` ip address
+   ```
+   minikube ip
+   ```
+7. Application will be available at `http://{minikube ip}:8080/swagger-ui/index.html`
+
 > You can observe the k8s dashboard using `minikube dashboard` command after deployment
 ---
 
